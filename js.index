@@ -1,4 +1,4 @@
-// UG & PG Courses (Easy to Update)
+
 const ugCourses = ["B.A.", "B.Sc.", "B.Com", "BBA", "BCA"];
 const pgCourses = ["M.A.", "M.Sc.", "M.Com", "MBA", "MCA", "Ph.D. (Research)"];
 
@@ -119,3 +119,4 @@ loadCourses();
 showAlerts();
 showCareerTip();
 updateProgressTracker();
+
