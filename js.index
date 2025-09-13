@@ -1,122 +1,165 @@
+// script.js
 
-const ugCourses = ["B.A.", "B.Sc.", "B.Com", "BBA", "BCA"];
-const pgCourses = ["M.A.", "M.Sc.", "M.Com", "MBA", "MCA", "Ph.D. (Research)"];
+document.addEventListener('DOMContentLoaded', () => {
 
-const timeline = [
-  { date: "2025-06-01", title: "College Admissions Open" },
-  { date: "2025-06-15", title: "Scholarship Application Deadline" },
-  { date: "2025-07-05", title: "Entrance Exam" }
-];
+  // UG & PG Courses (Easy to Update)
+  const ugCourses = ["B.A.", "B.Sc.", "B.Com", "BBA", "BCA"];
+  const pgCourses = ["M.A.", "M.Sc.", "M.Com", "MBA", "MCA", "Ph.D. (Research)"];
 
-const tips = [
-  "Start early – make a study schedule and stick to it!",
-  "Talk to teachers or mentors to get clarity about career options.",
-  "Focus on your strengths – choose a stream where you can excel.",
-  "Don’t ignore soft skills – communication & teamwork matter a lot!",
-  "Explore government scholarships to reduce cost of education."
-];
+  const timeline = [
+    { date: "2025-06-01", title: "College Admissions Open" },
+    { date: "2025-06-15", title: "Scholarship Application Deadline" },
+    { date: "2025-07-05", title: "Entrance Exam" }
+  ];
 
-const faqAnswers = {
-  jobs: "Science & Commerce have many competitive exams, but Arts is great for UPSC, Media & Law.",
-  fees: "Government colleges usually have very low fees compared to private institutions.",
-  scholarship: "Apply through National Scholarships Portal (NSP) and check state-level schemes."
-};
+  const tips = [
+    "Start early – make a study schedule and stick to it!",
+    "Talk to teachers or mentors to get clarity about career options.",
+    "Focus on your strengths – choose a stream where you can excel.",
+    "Don’t ignore soft skills – communication & teamwork matter a lot!",
+    "Explore government scholarships to reduce cost of education."
+  ];
 
-function saveProfile() {
-  const profile = {
-    name: document.getElementById('studentName').value,
-    class: document.getElementById('studentClass').value,
-    gender: document.getElementById('studentGender').value
+  const faqAnswers = {
+    jobs: "Science & Commerce have many competitive exams, but Arts is great for UPSC, Media & Law.",
+    fees: "Government colleges usually have very low fees compared to private institutions.",
+    scholarship: "Apply through National Scholarships Portal (NSP) and check state-level schemes."
   };
-  localStorage.setItem('studentProfile', JSON.stringify(profile));
-  document.getElementById('profileSaved').innerText = "✅ Profile saved!";
+
+  function saveProfile() {
+    const nameEl = document.getElementById('studentName');
+    const classEl = document.getElementById('studentClass');
+    const genderEl = document.getElementById('studentGender');
+    const profileSavedEl = document.getElementById('profileSaved');
+
+    if (!nameEl || !classEl || !genderEl || !profileSavedEl) return;
+
+    const profile = {
+      name: nameEl.value,
+      class: classEl.value,
+      gender: genderEl.value
+    };
+    localStorage.setItem('studentProfile', JSON.stringify(profile));
+    profileSavedEl.innerText = "✅ Profile saved!";
+    updateProgressTracker();
+  }
+
+  function calculateResult() {
+    const recommendationCard = document.getElementById('recommendationCard');
+    if (!recommendationCard) return;
+
+    let answers = document.querySelectorAll('input[type="radio"]:checked');
+    if (answers.length < 3) {
+      recommendationCard.innerText = "Please answer all questions!";
+      recommendationCard.style.display = "block";
+      return;
+    }
+    let scores = { science: 0, arts: 0, commerce: 0 };
+    answers.forEach(ans => scores[ans.value]++);
+    let recommended = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+    let message = "";
+    if (recommended === "science") message = "Recommended Stream: 🧪 Science";
+    if (recommended === "arts") message = "Recommended Stream: 🎨 Arts";
+    if (recommended === "commerce") message = "Recommended Stream: 💼 Commerce";
+    recommendationCard.innerText = message;
+    recommendationCard.style.display = "block";
+    updateProgressTracker();
+  }
+
+  function loadTimeline() {
+    const timelineList = document.getElementById('timelineList');
+    if (!timelineList) return;
+
+    timelineList.innerHTML =
+      timeline.map(x => `<li><strong>${x.date}</strong> - ${x.title}</li>`).join('');
+  }
+
+  function loadCourses() {
+    const ugEl = document.getElementById('ugCourses');
+    const pgEl = document.getElementById('pgCourses');
+    if (!ugEl || !pgEl) return;
+
+    ugEl.innerHTML = ugCourses.map(c => `<div class="course-item">${c}</div>`).join('');
+    pgEl.innerHTML = pgCourses.map(c => `<div class="course-item">${c}</div>`).join('');
+  }
+
+  function showAlerts() {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const today = new Date();
+    const upcoming = timeline.filter(x => new Date(x.date) > today);
+    if (upcoming.length) {
+      const alertBox = document.createElement('div');
+      alertBox.className = 'map-card';
+      alertBox.style.background = '#ffe6e6';
+      alertBox.innerHTML = `<strong>🔔 Upcoming Important Dates:</strong><br>` +
+        upcoming.map(x => `<div>📅 <strong>${x.date}</strong> — ${x.title}</div>`).join('');
+      mainEl.prepend(alertBox);
+    }
+  }
+
+  function showCareerTip() {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+    const tipBox = document.createElement('div');
+    tipBox.className = 'map-card';
+    tipBox.style.background = '#fffbe6';
+    tipBox.innerHTML = `<strong>💡 Career Tip:</strong> ${randomTip}`;
+    mainEl.prepend(tipBox);
+  }
+
+  function updateProgressTracker() {
+    let steps = 2, done = 0;
+    if (localStorage.getItem('studentProfile')) done++;
+    const recommendationCard = document.getElementById('recommendationCard');
+    if (recommendationCard && recommendationCard.style.display === 'block') done++;
+
+    const pct = Math.round((done / steps) * 100);
+    let bar = document.getElementById('appProgress');
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'appProgress';
+      bar.style.background = '#e9f2ff';
+      bar.style.height = '18px';
+      bar.style.borderRadius = '999px';
+      bar.style.margin = '12px 0';
+      bar.innerHTML = `<i style="display:block;height:100%;background:var(--brand);border-radius:999px;width:${pct}%"></i>`;
+      mainEl.prepend(bar);
+    } else {
+      const innerBar = bar.querySelector('i');
+      if (innerBar) innerBar.style.width = pct + '%';
+    }
+  }
+
+  function answerFAQ() {
+    const faqInput = document.getElementById('faqInput');
+    const faqAnswer = document.getElementById('faqAnswer');
+    if (!faqInput || !faqAnswer) return;
+
+    const q = faqInput.value.toLowerCase();
+    let answer = "❓ Sorry, I don't have an answer yet. Try asking about jobs, fees, or scholarship.";
+    for (const key in faqAnswers) {
+      if (q.includes(key)) { answer = faqAnswers[key]; break; }
+    }
+    faqAnswer.innerText = answer;
+  }
+
+  // Attach functions to window for HTML button onclick
+  window.saveProfile = saveProfile;
+  window.calculateResult = calculateResult;
+  window.answerFAQ = answerFAQ;
+
+  // Run on load
+  loadTimeline();
+  loadCourses();
+  showAlerts();
+  showCareerTip();
   updateProgressTracker();
-}
 
-function calculateResult() {
-  let answers = document.querySelectorAll('input[type="radio"]:checked');
-  if (answers.length < 3) {
-    document.getElementById('recommendationCard').innerText = "Please answer all questions!";
-    document.getElementById('recommendationCard').style.display = "block";
-    return;
-  }
-  let scores = { science: 0, arts: 0, commerce: 0 };
-  answers.forEach(ans => scores[ans.value]++);
-  let recommended = Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
-  let message = "";
-  if (recommended === "science") message = "Recommended Stream: 🧪 Science";
-  if (recommended === "arts") message = "Recommended Stream: 🎨 Arts";
-  if (recommended === "commerce") message = "Recommended Stream: 💼 Commerce";
-  document.getElementById('recommendationCard').innerText = message;
-  document.getElementById('recommendationCard').style.display = "block";
-  updateProgressTracker();
-}
-
-function loadTimeline(){
-  document.getElementById('timelineList').innerHTML = 
-    timeline.map(x=>`<li><strong>${x.date}</strong> - ${x.title}</li>`).join('');
-}
-
-function loadCourses() {
-  document.getElementById('ugCourses').innerHTML = ugCourses.map(c=>`<div class="course-item">${c}</div>`).join('');
-  document.getElementById('pgCourses').innerHTML = pgCourses.map(c=>`<div class="course-item">${c}</div>`).join('');
-}
-
-function showAlerts(){
-  const today = new Date();
-  const upcoming = timeline.filter(x => new Date(x.date) > today);
-  if(upcoming.length){
-    const alertBox = document.createElement('div');
-    alertBox.className = 'map-card';
-    alertBox.style.background = '#ffe6e6';
-    alertBox.innerHTML = `<strong>🔔 Upcoming Important Dates:</strong><br>` +
-      upcoming.map(x=>`<div>📅 <strong>${x.date}</strong> — ${x.title}</div>`).join('');
-    document.querySelector('main').prepend(alertBox);
-  }
-}
-
-function showCareerTip(){
-  const randomTip = tips[Math.floor(Math.random()*tips.length)];
-  const tipBox = document.createElement('div');
-  tipBox.className = 'map-card';
-  tipBox.style.background = '#fffbe6';
-  tipBox.innerHTML = `<strong>💡 Career Tip:</strong> ${randomTip}`;
-  document.querySelector('main').prepend(tipBox);
-}
-
-function updateProgressTracker(){
-  let steps = 2, done = 0;
-  if(localStorage.getItem('studentProfile')) done++;
-  if(document.getElementById('recommendationCard').style.display === 'block') done++;
-  const pct = Math.round((done/steps)*100);
-  let bar = document.getElementById('appProgress');
-  if(!bar){
-    bar = document.createElement('div');
-    bar.id = 'appProgress';
-    bar.style.background = '#e9f2ff';
-    bar.style.height = '18px';
-    bar.style.borderRadius = '999px';
-    bar.style.margin = '12px 0';
-    bar.innerHTML = `<i style="display:block;height:100%;background:var(--brand);border-radius:999px;width:${pct}%"></i>`;
-    document.querySelector('main').prepend(bar);
-  } else {
-    bar.querySelector('i').style.width = pct+'%';
-  }
-}
-
-function answerFAQ(){
-  const q = document.getElementById('faqInput').value.toLowerCase();
-  let answer = "❓ Sorry, I don't have an answer yet. Try asking about jobs, fees, or scholarship.";
-  for(const key in faqAnswers){
-    if(q.includes(key)){ answer = faqAnswers[key]; break; }
-  }
-  document.getElementById('faqAnswer').innerText = answer;
-}
-
-// Run on load
-loadTimeline();
-loadCourses();
-showAlerts();
-showCareerTip();
-updateProgressTracker();
-
+});
