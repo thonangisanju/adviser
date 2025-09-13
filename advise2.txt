@@ -1,0 +1,106 @@
+:root {
+  --brand: #0077b6;
+  --bg: #f5f7fa;
+  --card: #fff;
+  --text: #333;
+  --muted: #666;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: var(--brand);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+main {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+h2 {
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+
+.card {
+  background: var(--card);
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.map-card {
+  background: #eef6ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.quiz-question {
+  margin: 10px 0;
+}
+
+button {
+  background: var(--brand);
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+button:hover {
+  background: #023e8a;
+}
+
+input, select {
+  width: 100%;
+  padding: 6px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#recommendationCard {
+  display: none;
+  background: #dfffe0;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.course-item {
+  background: #f0f8ff;
+  border-radius: 6px;
+  padding: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
