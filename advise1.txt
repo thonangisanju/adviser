@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-Stop Career & Education Advisor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>🎓 One-Stop Career & Education Advisor</header>
+
+  <main>
+    <!-- Dynamic Tip + Progress Tracker -->
+    
+    <section class="card">
+      <h2>1. About</h2>
+      <p>This platform helps students choose the right subject stream, discover degree programs in nearby government colleges,
+        understand career opportunities, and get notified about admission timelines and scholarships.</p>
+    </section>
+
+    <section class="card">
+      <h2>2. Student Profile</h2>
+      <label>Name</label>
+      <input id="studentName" placeholder="Enter your name">
+      <label>Class</label>
+      <select id="studentClass">
+        <option value="10">10th</option>
+        <option value="12">12th</option>
+      </select>
+      <label>Gender</label>
+      <select id="studentGender">
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <button onclick="saveProfile()">Save Profile</button>
+      <div id="profileSaved" class="muted small"></div>
+    </section>
+
+    <section class="card">
+      <h2>3. Quick Interest Quiz</h2>
+      <form id="quizForm">
+        <div class="quiz-question">
+          <label>1. Which activity do you enjoy the most?</label><br>
+          <input type="radio" name="q1" value="science"> Experimenting in lab<br>
+          <input type="radio" name="q1" value="arts"> Writing poems or drawing<br>
+          <input type="radio" name="q1" value="commerce"> Solving money or business problems<br>
+        </div>
+
+        <div class="quiz-question">
+          <label>2. Which subject do you find most interesting?</label><br>
+          <input type="radio" name="q2" value="science"> Physics, Chemistry, Biology<br>
+          <input type="radio" name="q2" value="arts"> History, Literature<br>
+          <input type="radio" name="q2" value="commerce"> Accounts, Economics<br>
+        </div>
+
+        <div class="quiz-question">
+          <label>3. What is your dream career?</label><br>
+          <input type="radio" name="q3" value="science"> Doctor/Engineer/Scientist<br>
+          <input type="radio" name="q3" value="arts"> Writer/Artist/Journalist<br>
+          <input type="radio" name="q3" value="commerce"> Businessperson/Banker<br>
+        </div>
+
+        <button type="button" onclick="calculateResult()">Get Suggestion</button>
+      </form>
+
+      <div id="recommendationCard"></div>
+    </section>
+
+    <section class="card">
+      <h2>4. UG (Undergraduate) Courses</h2>
+      <div id="ugCourses" class="course-list"></div>
+    </section>
+
+    <section class="card">
+      <h2>5. PG (Postgraduate) Courses</h2>
+      <div id="pgCourses" class="course-list"></div>
+    </section>
+
+    <section class="card">
+      <h2>6. Nearby Government Colleges</h2>
+      <div class="map-card">
+        <strong>Govt. Degree College A</strong><br>
+        📍 Location: City Center<br>
+        🎓 Courses: B.A., B.Sc., B.Com.<br>
+        🏠 Hostel Available
+      </div>
+      <div class="map-card">
+        <strong>Govt. Degree College B</strong><br>
+        📍 Location: Near Bus Stand<br>
+        🎓 Courses: BBA, B.Com (Hons.)<br>
+        🖥️ Computer Lab, Library
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>7. Timeline & Important Dates</h2>
+      <ul id="timelineList"></ul>
+    </section>
+
+    <section class="card">
+      <h2>8. Quick Help & FAQ</h2>
+      <input id="faqInput" placeholder="Ask a question (e.g. jobs, fees, scholarship)">
+      <button onclick="answerFAQ()">Ask</button>
+      <div id="faqAnswer" class="muted small" style="margin-top:10px"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
